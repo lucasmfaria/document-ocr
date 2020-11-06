@@ -24,6 +24,12 @@ def load_model(config):
     return model
 
 def classify(image, config):
+    '''
+    Function to perform classification on an image
+    :param image:
+    :param config:
+    :return:
+    '''
     #Load image if its a path from a directory:
     img = load_image(image)
 
