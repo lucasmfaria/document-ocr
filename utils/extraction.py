@@ -1,8 +1,8 @@
 from PIL import Image
 import numpy as np
-from pathlib import Path
+import pytesseract
 
-def specific_pre_proc_ocr(image, class_name, ocr_tesseract):
+def specific_pre_proc_ocr(image, class_name):
     '''
     Function to generate specific preprocessing steps for each document type
     The preprocessing steps should improve the performance of the OCR unit (Tesseract)
@@ -30,18 +30,17 @@ def ocr(image, class_name=None):
     img = Image.open(image)
     img = img.convert('L')
     img_np = np.array(img)
-    ocr_tesseract = OCRWrapper(environ_path_tess=Path(os.environ['TESSERACT_PATH']).parent.resolve(), output_path='./tmp',
-                               output_ext='txt')
 
     #TODO - deal with document orientation
 
     if class_name:
         #specific OCR
-        img_np = specific_pre_proc_ocr(img_np, class_name, ocr_tesseract)
-        text = ocr_tesseract.predict(img_np)
+        img_np = specific_pre_proc_ocr(img_np, class_name)
+        text = pytesseract.image_to_string(img_np)
     else:
         #general OCR
-        img_np = ocr_tesseract.simple_preprocess(img_np)
-        text = ocr_tesseract.predict(img_np)
+        #simple preprocessing step:
+        #img_np = simple_preprocess(img_np)
+        text = pytesseract.image_to_string(img_np)
 
     return text

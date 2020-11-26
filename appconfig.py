@@ -1,0 +1,1 @@
+from models.vgg16.vgg16config import CLASS_NAMES
